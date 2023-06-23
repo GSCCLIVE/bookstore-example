@@ -1,0 +1,13 @@
+{
+    "isbn": "400-1",
+    "title": "Crown Princess",
+    "authors": [
+        {
+            "name": "Clive",
+            "birthday": "2018-06-23"
+        }
+    ],
+    "year": 2023,
+    "price": 25.5,
+    "genre": "Disney"
+}
