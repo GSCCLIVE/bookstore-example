@@ -2,8 +2,6 @@ package gscclive.example.bookstore.controllers;
 
 import java.util.Optional;
 
-import javax.swing.text.html.Option;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

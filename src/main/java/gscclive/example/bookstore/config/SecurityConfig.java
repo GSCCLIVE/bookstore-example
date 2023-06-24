@@ -6,13 +6,16 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
 	private static final String USER_ROLE = "USER";
@@ -20,16 +23,17 @@ public class SecurityConfig {
 
 	@Bean
 	public InMemoryUserDetailsManager userDetailsService() {
-		UserDetails admin = org.springframework.security.core.userdetails.User.builder()
-				.username("user")
-				.password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
+		PasswordEncoder encoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+
+		UserDetails admin = User.builder()
+				.username("admin")
+				.password(encoder.encode("password"))
 				.roles(ADMIN_ROLE)
 				.build();
-
-		UserDetails user = org.springframework.security.core.userdetails.User.builder()
-				.username("admin")
-				.password("{bcrypt}$2a$10$GRLdNijSQMUvl/au9ofL.eDwmoohzzS7.rmNSJZ.0FxO/BTk76klW")
-				.roles(ADMIN_ROLE)
+		UserDetails user = User.builder()
+				.username("user")
+				.password(encoder.encode("password"))
+				.roles(USER_ROLE)
 				.build();
 
 		return new InMemoryUserDetailsManager(admin, user);
@@ -37,29 +41,26 @@ public class SecurityConfig {
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		String bookUrl = "/book";
+		String bookUrl = "/book/**";
 		String authorUrl = "/author/**";
 
-		http.authorizeHttpRequests((authz) -> authz
+		http.authorizeHttpRequests(authz -> authz
 				.requestMatchers(HttpMethod.GET, bookUrl)
-				.hasAnyRole(USER_ROLE)
+				.hasAnyRole(USER_ROLE, ADMIN_ROLE)
 				.requestMatchers(HttpMethod.PATCH, bookUrl)
 				.hasAnyRole(USER_ROLE)
 				.requestMatchers(HttpMethod.POST, bookUrl)
 				.hasAnyRole(USER_ROLE)
 				.requestMatchers(HttpMethod.DELETE, bookUrl)
-				.hasAuthority(ADMIN_ROLE)
+				.hasRole(ADMIN_ROLE)
 				.requestMatchers(HttpMethod.GET, authorUrl)
-				.hasAnyRole(USER_ROLE)
-				.requestMatchers("/login")
-				.permitAll()
-				.requestMatchers("/**")
-				.authenticated()
-				.anyRequest().denyAll())
+				.hasAnyRole(USER_ROLE, ADMIN_ROLE)
+				.anyRequest().authenticated()
+				)
 				.httpBasic(Customizer.withDefaults())
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.csrf(csrf -> csrf.disable())
-				.formLogin(Customizer.withDefaults());
-		// .formLogin(form -> form.disable());
+				.formLogin(form -> form.disable());
 		return http.build();
 	}
 

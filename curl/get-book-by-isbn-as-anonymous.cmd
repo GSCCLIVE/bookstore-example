@@ -2,5 +2,5 @@
 @setlocal enableextensions
 @cd /d "%~dp0"
 
-curl localhost:8080/author/find/Clive
+curl -X GET http://localhost:8080/book/100-1
 pause
