@@ -6,12 +6,14 @@ import java.util.Set;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import gscclive.example.bookstore.entities.Author;
 import gscclive.example.bookstore.entities.Book;
 import gscclive.example.bookstore.service.BookService;
 
 @Configuration
+@EnableTransactionManagement
 public class ContextConfiguration {
 
 	@Bean
