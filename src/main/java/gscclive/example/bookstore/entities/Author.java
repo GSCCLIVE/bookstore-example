@@ -1,7 +1,6 @@
 package gscclive.example.bookstore.entities;
 
 import java.time.LocalDate;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -10,10 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,9 +32,11 @@ public class Author {
     private int id;
 
     @Column(name = "author_name", nullable = false, unique = true)
+    @NotBlank(message = "Author need to have a name")
     private String name; 
 
     @Column(name = "author_birthday", nullable = false)
+    @NotNull(message = "Author need to have a birthday")
     private LocalDate birthday;
 
     // @ManyToMany
