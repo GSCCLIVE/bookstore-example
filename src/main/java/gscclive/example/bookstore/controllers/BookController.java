@@ -3,6 +3,7 @@ package gscclive.example.bookstore.controllers;
 import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public Optional<Book> get(@PathVariable String isbn) {
         log.info("Retrieving book isbn: {}", isbn);
+        Assert.state(isbn.contains("-"), "Invalid isbn. Please enter a valid isbn.");
         return bookRepo.findById(isbn);
     }
 
@@ -56,6 +58,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable String isbn) {
         log.info("Removing book isbn: {}", isbn);
+        Assert.state(isbn.contains("-"), "Invalid isbn. Please enter a valid isbn.");
         bookRepo.deleteById(isbn);
     }
 

@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 @ControllerAdvice
-public class GlobalExceptionHandlers {
+public class GlobalExceptionHandlersAdvice {
 
     /**
      * Handle book isbn exist exception to a readable format.
@@ -37,5 +37,14 @@ public class GlobalExceptionHandlers {
                 .stream()
                 .map(ConstraintViolation::getMessageTemplate)
                 .collect(Collectors.joining(", ")));
+    }
+
+    /**
+     * Handle book illegal state exception to a readable format.
+     */
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseStatusException handleIllegalStateException(IllegalStateException ex) {
+        log.error(ex.getMessage());
+        return new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
 }
