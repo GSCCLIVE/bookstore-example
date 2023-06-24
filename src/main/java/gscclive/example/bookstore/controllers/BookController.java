@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import gscclive.example.bookstore.entities.Book;
 import gscclive.example.bookstore.repositories.BookRepository;
 import gscclive.example.bookstore.service.BookService;
+import io.micrometer.observation.Observation;
+import io.micrometer.observation.ObservationRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -26,10 +28,12 @@ public class BookController {
 
     private final BookRepository bookRepo;
     private final BookService bookService;
+    private final ObservationRegistry obsRegistry;
 
-    public BookController(BookRepository bookRepo, BookService bookService) {
+    public BookController(BookRepository bookRepo, BookService bookService, ObservationRegistry obsRegistry) {
         this.bookRepo = bookRepo;
         this.bookService = bookService;
+        this.obsRegistry = obsRegistry;
     }
 
     @GetMapping("/{isbn}")
@@ -37,7 +41,8 @@ public class BookController {
     public Optional<Book> get(@PathVariable String isbn) {
         log.info("Retrieving book isbn: {}", isbn);
         Assert.state(isbn.contains("-"), "Invalid isbn. Please enter a valid isbn.");
-        return bookRepo.findById(isbn);
+        return Observation.createNotStarted("getBookByIsbn", obsRegistry)
+                .observe(() -> bookRepo.findById(isbn));
     }
 
     @GetMapping

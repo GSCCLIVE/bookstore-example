@@ -45,6 +45,8 @@ public class SecurityConfig {
 		String authorUrl = "/author/**";
 
 		http.authorizeHttpRequests(authz -> authz
+				.requestMatchers("/actuator/**")
+				.permitAll()
 				.requestMatchers(HttpMethod.GET, bookUrl)
 				.hasAnyRole(USER_ROLE, ADMIN_ROLE)
 				.requestMatchers(HttpMethod.PATCH, bookUrl)
