@@ -21,7 +21,7 @@ public class AuthorController {
     public AuthorController(AuthorRepository authorRepo) {
         this.authorRepo = authorRepo;
     }
-    
+
     @GetMapping("/{id}")
     public Optional<Author> get(@PathVariable Integer id) {
         log.info("Retrieving author details by id: {}", id);

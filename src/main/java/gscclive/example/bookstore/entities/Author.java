@@ -33,7 +33,7 @@ public class Author {
 
     @Column(name = "author_name", nullable = false, unique = true)
     @NotBlank(message = "Author need to have a name")
-    private String name; 
+    private String name;
 
     @Column(name = "author_birthday", nullable = false)
     @NotNull(message = "Author need to have a birthday")
