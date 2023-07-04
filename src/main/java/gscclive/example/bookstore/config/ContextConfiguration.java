@@ -11,10 +11,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import gscclive.example.bookstore.entities.Author;
 import gscclive.example.bookstore.entities.Book;
 import gscclive.example.bookstore.service.BookService;
+import lombok.extern.slf4j.Slf4j;
 
 @Configuration
+@Slf4j
 @EnableTransactionManagement
 public class ContextConfiguration {
+
+	private static final String LOG_CREATE_BOOK = "Creating new book: {}";
 
 	@Bean
 	public CommandLineRunner demo(BookService service) {
@@ -56,10 +60,13 @@ public class ContextConfiguration {
 					.price(20.5)
 					.genre("World")
 					.build();
-			service.create(helloWorld);
-			service.create(sportWorld);
-			service.create(divineWorld);
 
+			log.info(LOG_CREATE_BOOK, helloWorld.getTitle());
+			service.create(helloWorld);
+			log.info(LOG_CREATE_BOOK, sportWorld.getTitle());
+			service.create(sportWorld);
+			log.info(LOG_CREATE_BOOK, divineWorld.getTitle());
+			service.create(divineWorld);
 		};
 	}
 }

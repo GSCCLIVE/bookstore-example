@@ -1,52 +1,66 @@
 package gscclive.example.bookstore.entities;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+/**
+ * Book entity.
+ * 
+ * @author GCLIVE
+ */
 @Entity
 @Table(name = "book")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Getter
+@Setter
 @Builder
 public class Book {
 
     @Id
-    @Column(name = "book_isbn")
+    @Column(name = "isbn")
+    @NotNull(message = "ISBN is missing.")
+    @NotBlank(message = "ISBN cannot be empty.")
     private String isbn;
 
-    @Column(name = "book_title", nullable = false)
     @NotBlank(message = "Title cannot be empty.")
     private String title;
 
-    @ManyToMany
-    @JoinColumn(name = "author_id", insertable = true, updatable = true)
-    @NotNull(message = "Book need to have minimum of 1 author.")
+    @OneToMany(mappedBy = "book", cascade=CascadeType.ALL, orphanRemoval = true)
+    @NotNull(message = "Book need to have an author.")
+    @Size(min = 1, message = "Book need to have minimum of 1 author.")
     private Set<Author> authors;
 
-    @Column(name = "book_year", nullable = false)
+    @Column(name = "publication", nullable = false)
+    @NotNull(message = "Book need a publication year.")
     @Min(1000)
+    @Max(9999)
     private int year;
 
-    @Column(name = "book_price", nullable = false)
     @PositiveOrZero
+    @NotNull(message = "Book need to have a price.")
     private double price;
 
-    @Column(name = "book_genre", nullable = false)
-    @NotBlank(message = "Book need to have a genre")
+    @NotBlank(message = "Book need to have a genre.")
     private String genre;
+
 }

@@ -28,14 +28,8 @@ Unfortunately, there are a few new libraries unable to showcase. The usage of H2
 
 ### Using bookstore service 
 
-1. **User** - able to get, patch, post book.
-2. **Admin** - able to get, delete book.
-3. **User** and **Admin** - able to get author info.
-
-## H2 In-memory database
-
-1. Change **application.properties** - spring.h2.console.enabled=true
-2. Open this: [H2 console](localhost:8080/h2-console)
+1. **Anonymous** and **User** users - able to get, update, create book.
+2. **User** users - able to delete book.
 
 ## Spring Acutator
 
@@ -43,4 +37,9 @@ Unfortunately, there are a few new libraries unable to showcase. The usage of H2
 
 Run `get-book-by-isbn-as-admin.cmd` or `get-book-by-isbn-as-user` multiple time and take a look at the measures taken shown in 
 
-2. [Spring Actuactor - getBookByIsbn](http://localhost:8080/actuator/metrics/getBookByIsbn)
+- [Spring Actuactor - findAllByTitleOrAuthorsName](http://localhost:8080/actuator/metrics/findAllByTitleOrAuthorsName)
+- [Spring Actuactor - findAllByTitle](http://localhost:8080/actuator/metrics/findAllByTitle)
+- [Spring Actuactor - findAllByAuthorsName](http://localhost:8080/actuator/metrics/findAllByAuthorsName)
+- [Spring Actuactor - create](http://localhost:8080/actuator/metrics/create)
+- [Spring Actuactor - update](http://localhost:8080/actuator/metrics/update)
+- [Spring Actuactor - delete](http://localhost:8080/actuator/metrics/delete)

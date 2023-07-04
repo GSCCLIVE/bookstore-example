@@ -14,6 +14,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Security configuration beans.
+ * 
+ * @author GCLIVE 
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -42,22 +47,16 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		String bookUrl = "/book/**";
-		String authorUrl = "/author/**";
+		String actuator = "/actuator/**";
 
 		http.authorizeHttpRequests(authz -> authz
-				.requestMatchers("/actuator/**")
-				.permitAll()
-				.requestMatchers(HttpMethod.GET, bookUrl)
-				.hasAnyRole(USER_ROLE, ADMIN_ROLE)
-				.requestMatchers(HttpMethod.PATCH, bookUrl)
-				.hasAnyRole(USER_ROLE)
-				.requestMatchers(HttpMethod.POST, bookUrl)
-				.hasAnyRole(USER_ROLE)
 				.requestMatchers(HttpMethod.DELETE, bookUrl)
-				.hasRole(ADMIN_ROLE)
-				.requestMatchers(HttpMethod.GET, authorUrl)
-				.hasAnyRole(USER_ROLE, ADMIN_ROLE)
-				.anyRequest().authenticated())
+				.hasRole(USER_ROLE)
+				.requestMatchers(actuator)
+				.permitAll()
+				.requestMatchers(bookUrl)
+				.permitAll()
+				.anyRequest().denyAll())
 				.httpBasic(Customizer.withDefaults())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.csrf(csrf -> csrf.disable())
