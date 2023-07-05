@@ -1,7 +1,5 @@
 package gscclive.example.bookstore.entities;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -37,11 +35,12 @@ import lombok.Setter;
 public class Book {
 
     @Id
-    @Column(name = "isbn")
+    @Column(name = "isbn", updatable = false)
     @NotNull(message = "ISBN is missing.")
     @NotBlank(message = "ISBN cannot be empty.")
     private String isbn;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     @NotBlank(message = "Title cannot be empty.")
     private String title;
 
@@ -50,7 +49,7 @@ public class Book {
     @Size(min = 1, message = "Book need to have minimum of 1 author.")
     private Set<Author> authors;
 
-    @Column(name = "publication", nullable = false)
+    @Column(name = "publication", nullable = false, columnDefinition = "TEXT")
     @NotNull(message = "Book need a publication year.")
     @Min(1000)
     @Max(9999)
@@ -60,6 +59,7 @@ public class Book {
     @NotNull(message = "Book need to have a price.")
     private double price;
 
+    @Column(nullable = false, columnDefinition = "TEXT")
     @NotBlank(message = "Book need to have a genre.")
     private String genre;
 

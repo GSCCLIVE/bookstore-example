@@ -8,6 +8,11 @@ import gscclive.example.bookstore.exceptions.BookIsbnAlreadyExistException;
 import gscclive.example.bookstore.exceptions.BookNotFoundException;
 import gscclive.example.bookstore.repositories.BookRepository;
 
+/**
+ * Business logic of book service. 
+ * 
+ * @author GCLIVE
+ */
 @Service
 @Transactional
 public class BookServiceImpl implements BookService {
@@ -27,7 +32,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book update(Book book) {
+    public Book update(Book book) throws BookNotFoundException {
         if (!bookRepository.existsById(book.getIsbn())) {
             throw new BookNotFoundException(book.getIsbn());
         }
@@ -41,7 +46,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void delete(String isbn) {
+    public void delete(String isbn) throws BookNotFoundException {
         if (!bookRepository.existsById(isbn)) {
             throw new BookNotFoundException(isbn);
         }
