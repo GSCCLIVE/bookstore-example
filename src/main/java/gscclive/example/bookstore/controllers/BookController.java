@@ -1,7 +1,6 @@
 package gscclive.example.bookstore.controllers;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.util.Assert;
@@ -9,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -102,7 +102,7 @@ public class BookController {
      * @param book to update
      * @return book updated
      */
-    @PostMapping("/{isbn}")
+    @PutMapping("/{isbn}")
     @ResponseStatus(HttpStatus.OK)
     public Book update(@PathVariable String isbn, @RequestBody Book book) {
         log.info("Updating book isbn: {}", isbn);
