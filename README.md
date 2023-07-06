@@ -35,7 +35,7 @@ Unfortunately, there are a few new libraries unable to showcase. The usage of H2
 
 1. [Spring Actuator](localhost:8080/actuator)
 
-Run `get-book-by-isbn-as-admin.cmd` or `get-book-by-isbn-as-user` multiple time and take a look at the measures taken shown in 
+Run any of the curl multiple time and take a look at the endpoint's measures shown in 
 
 - [Spring Actuactor - findAllByTitleOrAuthorsName](http://localhost:8080/actuator/metrics/findAllByTitleOrAuthorsName)
 - [Spring Actuactor - findAllByTitle](http://localhost:8080/actuator/metrics/findAllByTitle)
